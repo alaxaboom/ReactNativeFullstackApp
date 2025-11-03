@@ -1,0 +1,16 @@
+export { default as HomePage } from "./HomePage/index";
+export { default as LoanPage } from "./loan/LoanPage";
+export { default as LoginPage } from "./auth/LoginPage";
+export { default as RegisterPage } from "./auth/RegisterPage";
+export { default as OTPPage } from "./auth/OTPPage";
+export { default as PasswordPage } from "./password/PasswordPage";
+export { default as BiometricsPage } from "./password/BiometricsPage";
+export { default as ResetPasswordPage } from "./auth/ResetPasswordPage";
+export { default as ProductsListPage } from "./ProductsListPage/index";
+export { default as ProfilePage } from "./ProfilePage/index";
+export { default as FirstPage } from "./FirstPage/index";
+export { default as CallMeBackPage } from "./CallMeBackPage/index";
+export { default as HowToPayPage } from "./HowToPayPage/index";
+export { default as HowToPayExtensionPage } from "./HowToPayPageExtension/index";
+export { default as ContactUsPage } from "./ContactUsPage/index";
+export { default as LocationPage } from "./LocationPage/index";
