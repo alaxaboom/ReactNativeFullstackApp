@@ -2,19 +2,20 @@ import { useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import {  setCurrentStep } from '../store/loanSlice';
+import { setCurrentStep } from '../store/loanSlice';
 import { useAuth } from '../hooks/useAuth';
 import { useLoanManagement } from '../hooks/useLoanManagement';
 import { NavigationFunction } from '../types/index';
+
 type UseRegistrationFlowProps = {
   onNavigate: NavigationFunction;
   onExitLoanProcess: () => void;
 };
 
-export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegistrationFlowProps) => {
+export const useRegistrationFlow = ({}: UseRegistrationFlowProps) => {
   const dispatch = useAppDispatch();
   const loanForm = useAppSelector((state) => state.loan);
-  const { isAuthenticated, createUserOnly, login, loginUser } = useAuth();
+  const { isAuthenticated, createUserOnly, loginUser } = useAuth();
   const { submitLoanApplication } = useLoanManagement();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -84,7 +85,6 @@ export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegist
           return;
         }
 
-        // Add password to user object for login
         const userWithPassword = {
           ...createResult.user,
           password: password,
@@ -92,7 +92,6 @@ export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegist
           email: userData.email
         };
 
-        // Login the user directly with the created user data
         const loginResult = await loginUser(userWithPassword);
         if (!loginResult.success) {
           Alert.alert("Login Error", loginResult.error || "Unable to login after registration");
@@ -100,10 +99,11 @@ export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegist
           return;
         }
 
-        // Wait a bit for the auth state to update
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise<void>((resolve) => {
+          setTimeout(() => resolve(), 100);
+        });
         
-        const submitResult = await submitLoanApplication(loginResult.user?.id);
+        const submitResult = await submitLoanApplication(loginResult.user?.id?.toString());
         if (!submitResult.success) {
           await AsyncStorage.removeItem("in_loan_process");
           Alert.alert("Error", submitResult.error || "Unable to submit application");
@@ -130,9 +130,6 @@ export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegist
     loanForm.userData.lastName,
     loanForm.userData.phone,
     loanForm.userData.jmbg,
-    loanForm.selectedProduct,
-    loanForm.loanAmount,
-    loanForm.loanPeriod,
     password,
     confirmPassword,
     email,
@@ -141,8 +138,6 @@ export const useRegistrationFlow = ({ onNavigate, onExitLoanProcess }: UseRegist
     createUserOnly,
     loginUser,
     submitLoanApplication,
-    onNavigate,
-    onExitLoanProcess,
   ]);
 
   const resetJustRegistered = useCallback(() => {

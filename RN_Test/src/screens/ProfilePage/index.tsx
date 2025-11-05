@@ -1,4 +1,4 @@
-// src/screens/profile/ProfilePage/index.tsx
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Alert, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

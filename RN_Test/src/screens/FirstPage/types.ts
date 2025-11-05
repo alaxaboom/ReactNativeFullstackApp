@@ -1,9 +1,9 @@
-import { ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 export interface FirstPageProps {}
 
 export interface BenefitCardProps {
   text: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export interface ActionButtonProps {

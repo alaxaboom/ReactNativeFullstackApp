@@ -3,7 +3,6 @@ import { applicationApi } from "./applicationApi";
 
 export { userApi, applicationApi };
 
-// Re-export user API hooks
 export const {
   useRegisterUserMutation,
   useLoginUserMutation,
@@ -18,7 +17,6 @@ export const {
   useResetPasswordMutation
 } = userApi;
 
-// Re-export application API hooks
 export const {
   useCreateApplicationMutation,
   useGetMyApplicationsQuery,

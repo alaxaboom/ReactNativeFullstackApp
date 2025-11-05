@@ -4,7 +4,7 @@ import { useLoginUserMutation, useRegisterUserMutation, useGetMeQuery, useRefres
 import { setCredentials, setUser, logout, setLoading } from '../store/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootState, resetApiCache } from '../store/store';
-import { User, RegisterData, AuthResult, LoginCredentials } from '../types';
+import { User, RegisterData, AuthResult } from '../types';
 import { extractErrorMessage } from '../utils/errorUtils';
 
 export const useAuth = () => {

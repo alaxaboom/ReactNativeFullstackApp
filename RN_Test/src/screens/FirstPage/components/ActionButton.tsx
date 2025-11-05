@@ -1,8 +1,9 @@
+// FirstPage/components/ActionButton/index.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ActionButtonProps } from '../types';
-import styles from '../styles';
+import { ActionButtonStyles } from '../styles';
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   iconName,
@@ -13,12 +14,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 }) => {
   return (
     <TouchableOpacity style={style} onPress={onPress}>
-      <View style={styles.iconContainer}>
+      <View style={ActionButtonStyles.iconContainer}>
         <Ionicons name={iconName} size={28} color="white" />
       </View>
-      <View style={styles.actionButtonTextContainer}>
-        <Text style={styles.actionButtonTitle}>{title}</Text>
-        <Text style={styles.actionButtonSubtitle}>{subtitle}</Text>
+      <View style={ActionButtonStyles.actionButtonTextContainer}>
+        <Text style={ActionButtonStyles.actionButtonTitle}>{title}</Text>
+        <Text style={ActionButtonStyles.actionButtonSubtitle}>{subtitle}</Text>
       </View>
     </TouchableOpacity>
   );

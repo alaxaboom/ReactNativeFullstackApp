@@ -7,7 +7,6 @@ export const applicationApi = createApi({
   baseQuery: httpBaseQuery,
   tagTypes: ["Application"],
   endpoints: (builder) => ({
-    // Заявки
     createApplication: builder.mutation<LoanApplication, CreateApplicationDto>({
       query: (data) => ({
         url: "applications",

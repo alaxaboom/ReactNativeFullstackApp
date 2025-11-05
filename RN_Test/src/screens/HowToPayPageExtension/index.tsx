@@ -10,7 +10,6 @@ type HowToPayExtensionPageProps = {};
 
 const HowToPayExtensionPage: React.FC<HowToPayExtensionPageProps> = () => {
   const { navigateTo } = useNavigation();
-  // Данные для аккордеона (вопросы и ответы)
   const faqData = [
     {
       id: "repayment",
@@ -65,7 +64,6 @@ const HowToPayExtensionPage: React.FC<HowToPayExtensionPageProps> = () => {
         <View style={mainCardStyles.mainCard}>
           <Text style={mainCardStyles.mainTitle}>Payment, repayment and delay</Text>
 
-          {/* Список аккордеонов */}
           {faqData.map((item) => (
             <AccordionItem
               key={item.id}

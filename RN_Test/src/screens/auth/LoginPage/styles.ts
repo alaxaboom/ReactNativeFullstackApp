@@ -1,4 +1,4 @@
-// src/screens/auth/LoginPage/styles.ts
+
 import { StyleSheet } from 'react-native';
 
 export const loginPageStyles = StyleSheet.create({

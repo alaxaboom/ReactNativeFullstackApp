@@ -17,6 +17,7 @@ import {
   useGetMyCreditsQuery,
 } from '../../store/api';
 import BottomNavigation from '../../components/BottomNavigation';
+import { LoadingScreen } from '../../components/LoadingScreen';
 import UserHeader from './components/UserHeader';
 import LoanCard from '../ProductsListPage/components/LoanCard';
 import QuickActions from './components/QuickActions';
@@ -31,7 +32,7 @@ const { width } = Dimensions.get('window');
 const HomePage: React.FC<HomeScreenProps> = ({ isAuthenticated }) => {
   const { navigateTo } = useNavigation();
   const { isAuthenticated: authState } = useAppSelector((state) => state.auth);
-  const { data: user, isLoading: userLoading } = useGetMeQuery(undefined, {
+  const { data: user, isLoading: userLoading, error: userError } = useGetMeQuery(undefined, {
     skip: !authState,
   });
 
@@ -39,24 +40,9 @@ const HomePage: React.FC<HomeScreenProps> = ({ isAuthenticated }) => {
   const { data: applications = [] } = useGetMyApplicationsQuery(undefined, {
     skip: !userId,
   });
-  const { data: credits = [] } = useGetMyCreditsQuery(undefined, {
+  const { data: credits = [], isLoading: creditsLoading } = useGetMyCreditsQuery(undefined, {
     skip: !userId,
   });
-
-  if (userLoading) {
-    return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: '#FFFFFF',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text>Loading profile...</Text>
-      </SafeAreaView>
-    );
-  }
 
   const getLatestCredits = (credits: LoanApplication[]): LoanApplication[] => {
     if (credits.length === 0) return [];
@@ -71,11 +57,6 @@ const HomePage: React.FC<HomeScreenProps> = ({ isAuthenticated }) => {
 
   const latestCredits = getLatestCredits(credits);
 
-  const handleApplyForLoan = () => navigateTo('loan');
-  const handleCallMeBack = () => navigateTo('callback');
-  const handleApplicationsList = () =>
-    navigateTo('products', { tab: 'applications' });
-
   const indicatorPosition = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -88,6 +69,30 @@ const HomePage: React.FC<HomeScreenProps> = ({ isAuthenticated }) => {
       }).start();
     }
   }, [latestCredits.length, indicatorPosition]);
+
+  if (userLoading || (userId && creditsLoading === true)) {
+    return <LoadingScreen />;
+  }
+
+  if (userError) {
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: '#FFFFFF',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text>Error loading profile</Text>
+      </SafeAreaView>
+    );
+  }
+
+  const handleApplyForLoan = () => navigateTo('loan');
+  const handleCallMeBack = () => navigateTo('callback');
+  const handleApplicationsList = () =>
+    navigateTo('products', { tab: 'applications' });
 
   const renderStepIndicator = () => {
     if (latestCredits.length === 0) return null;

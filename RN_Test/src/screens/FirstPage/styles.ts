@@ -2,14 +2,21 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-export default StyleSheet.create({
+export const PageStyles = StyleSheet.create({
   gradientBackground: {
     flex: 1,
   },
   headerSafeArea: {
-    paddingHorizontal: 24,
+    
     paddingTop: 60,
     paddingBottom: 20,
+    flex: 1,
+  },
+  scrollViewContent: {
+    paddingBottom: 100,
+  },
+  headerSection: {
+    marginBottom: 20,
   },
   headerTop: {
     alignItems: 'center',
@@ -31,11 +38,54 @@ export default StyleSheet.create({
     opacity: 0.9,
   },
   benefitsContainer: {
-    marginHorizontal: 10,
+    marginHorizontal: 25,
   },
   benefitsRow: {
     flexDirection: 'row',
   },
+  contentSection: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingHorizontal: 20,
+    paddingTop: 35,
+    marginTop: 45,
+    overflow: 'hidden',
+    width: '100%',
+    paddingBottom: 80,
+  },
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  loginSection: {
+    alignItems: 'center',
+  },
+  loginPrompt: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 20,
+  },
+  loginButton: {
+    backgroundColor: '#00C853',
+    borderRadius: 16,
+    paddingHorizontal: 48,
+    paddingVertical: 20,
+    width: width - 58,
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  bottomNavContainer: {
+    backgroundColor: 'white',
+  },
+});
+
+export const BenefitCardStyles = StyleSheet.create({
   benefitCard: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -86,21 +136,9 @@ export default StyleSheet.create({
     lineHeight: 16,
     flex: 1,
   },
-  contentSection: {
-    backgroundColor: 'white',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    paddingHorizontal: 20,
-    paddingTop: 35,
-    flex: 1,
-    marginTop: 45,
-    overflow: 'hidden',
-  },
-  actionButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
+});
+
+export const ActionButtonStyles = StyleSheet.create({
   actionButton: {
     backgroundColor: 'white',
     borderRadius: 20,
@@ -123,7 +161,9 @@ export default StyleSheet.create({
     marginBottom: 16,
     alignSelf: 'flex-start',
   },
-  actionButtonTextContainer: {},
+  actionButtonTextContainer: {
+    flex: 1,
+  },
   actionButtonTitle: {
     fontSize: 16,
     fontWeight: '600',
@@ -133,29 +173,5 @@ export default StyleSheet.create({
   actionButtonSubtitle: {
     fontSize: 14,
     color: '#666',
-  },
-  loginSection: {
-    alignItems: 'center',
-  },
-  loginPrompt: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 20,
-  },
-  loginButton: {
-    backgroundColor: '#00C853',
-    borderRadius: 16,
-    paddingHorizontal: 48,
-    paddingVertical: 20,
-    width: width - 58,
-  },
-  loginButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  bottomNavContainer: {
-    backgroundColor: 'white',
   },
 });

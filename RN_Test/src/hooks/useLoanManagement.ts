@@ -7,7 +7,7 @@ import {
   useApproveApplicationMutation,
 } from "../store/api";
 import { resetLoanForm, prefillUserData } from "../store/loanSlice";
-import { CreateApplicationDto, LoanApplication } from "../types";
+import { CreateApplicationDto } from "../types";
 import { extractErrorMessage } from "../utils/errorUtils";
 
 export const useLoanManagement = () => {
@@ -164,7 +164,6 @@ export const useLoanManagement = () => {
 
   const simulateStatusChange = async (
     applicationId: string,
-    status: LoanApplication["status"]
   ) => {
     try {
       await updateApplicationStatus(applicationId).unwrap();

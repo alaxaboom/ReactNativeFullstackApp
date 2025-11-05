@@ -1,4 +1,3 @@
-// src/screens/auth/LoginPage/index.tsx
 import React, { useState } from 'react';
 import {
   View,
@@ -56,9 +55,7 @@ const LoginPage: React.FC<AuthNavigationProps> = () => {
     }
 
     const result = await login(phoneOrEmail, password);
-    if (result.success) {
-      navigateTo('home');
-    } else {
+    if (!result.success) {
       Alert.alert('Ошибка входа', result.error || 'Неверные учетные данные');
     }
   };

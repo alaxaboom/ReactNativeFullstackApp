@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppSelector, useAppDispatch } from "../store/store";
 import type {
@@ -28,12 +27,12 @@ import {
 } from "../screens";
 import { resetLoanForm } from "../store/loanSlice";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { setCredentials, logout, setUser, updateTokens } from "../store/authSlice";
+import { setCredentials, logout, updateTokens } from "../store/authSlice";
 import { useGetMeQuery, useRefreshTokenMutation } from "../store/api";
 import { NavigationProvider } from '../contexts/NavigationContext';
 const AppNavigator = () => {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [refreshToken] = useRefreshTokenMutation();
   const { error: userError, refetch: refetchUser } = useGetMeQuery(undefined, {
     skip: !isAuthenticated
@@ -132,6 +131,13 @@ const AppNavigator = () => {
       setNavigationState(createNavigationState(initialScreen, undefined));
     }
   }, [isPasscodeChecked, isAuthenticated, passcodeExists, isInLoanProcess, navigationState]);
+
+  useEffect(() => {
+    if (isPasscodeChecked && isAuthenticated && navigationState && navigationState.screen === "login") {
+      const targetScreen: Screen = passcodeExists ? "password" : "home";
+      setNavigationState(createNavigationState(targetScreen, undefined));
+    }
+  }, [isAuthenticated, isPasscodeChecked, navigationState, passcodeExists]);
 
   const navigateTo: NavigationFunction = (screen, params) => {
     if (screen === "callback") {
