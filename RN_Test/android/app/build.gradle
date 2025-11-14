@@ -117,4 +117,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
+    // react-native-maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }

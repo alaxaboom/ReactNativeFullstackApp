@@ -4,6 +4,7 @@ import User from './user/model';
 import PasswordResetToken from './passwordResetToken/model';
 import Application from './application/model';
 import IncompleteUser from './incompleteUser/model';
+import Location from './location/model';
 
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = config[env as keyof typeof config];
@@ -26,6 +27,7 @@ User.initModel(sequelize);
 PasswordResetToken.initModel(sequelize);
 Application.initModel(sequelize);
 IncompleteUser.initModel(sequelize);
+Location.initModel(sequelize);
 
 User.hasMany(PasswordResetToken, { foreignKey: 'userId', onDelete: 'CASCADE' });
 PasswordResetToken.belongsTo(User, { foreignKey: 'userId' });
@@ -33,4 +35,4 @@ PasswordResetToken.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(Application, { foreignKey: 'userId', onDelete: 'CASCADE' });
 Application.belongsTo(User, { foreignKey: 'userId' });
 
-export { User, PasswordResetToken, Application, IncompleteUser };
+export { User, PasswordResetToken, Application, IncompleteUser, Location };

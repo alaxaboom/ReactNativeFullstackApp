@@ -10,7 +10,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { userApi, applicationApi } from "./api";
+import { userApi, applicationApi, locationApi } from "./api";
 import authReducer from "./authSlice";
 import loanReducer from "./loanSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,7 @@ const loanPersistConfig = {
 const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [applicationApi.reducerPath]: applicationApi.reducer,
+  [locationApi.reducerPath]: locationApi.reducer,
   auth: persistReducer(authPersistConfig, authReducer),
   loan: persistReducer(loanPersistConfig, loanReducer),
 });
@@ -41,7 +42,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userApi.middleware, applicationApi.middleware),
+    }).concat(userApi.middleware, applicationApi.middleware, locationApi.middleware),
   devTools: __DEV__,
 });
 
@@ -49,6 +50,7 @@ export const persistor = persistStore(store);
 export const resetApiCache = () => {
   store.dispatch(userApi.util.resetApiState());
   store.dispatch(applicationApi.util.resetApiState());
+  store.dispatch(locationApi.util.resetApiState());
 };
 
 export type RootState = ReturnType<typeof store.getState>;

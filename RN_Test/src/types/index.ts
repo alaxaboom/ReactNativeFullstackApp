@@ -189,3 +189,18 @@ export interface CreateApplicationDto {
   monthlyRepayment: number;
   firstInstallmentDueDate: string; 
 }
+
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  phone: string | null;
+  website: string | null;
+  mail: string | null;
+  category: string | null;
+  closed_at: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

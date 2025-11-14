@@ -21,6 +21,7 @@ export const locationPageStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
+    color: '#333',
   },
   searchIcon: {
     padding: 8,
@@ -28,37 +29,36 @@ export const locationPageStyles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: '#f5f5f5',
-    borderRadius: 20,
+    borderRadius: 8,
     marginHorizontal: 16,
-    marginTop: 16,
-    overflow: 'hidden',
+    marginTop: 8,
+    marginBottom: 8,
+    padding: 4,
   },
   tab: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 10,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    borderRadius: 6,
+    backgroundColor: 'transparent',
   },
   activeTab: {
-    backgroundColor: '#00C853',
+    backgroundColor: '#fff',
   },
   tabText: {
     fontSize: 16,
-    color: '#333',
+    color: '#666',
+    fontWeight: '500',
   },
   activeTabText: {
-    color: '#fff',
+    color: '#333',
+    fontWeight: '600',
   },
 });
 
 export const mapViewStyles = StyleSheet.create({
   mapContainer: {
     flex: 1,
-    marginHorizontal: 16,
-    marginVertical: 16,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 12,
-    overflow: 'hidden',
   },
   mapPlaceholder: {
     flex: 1,
@@ -80,13 +80,7 @@ export const mapViewStyles = StyleSheet.create({
 export const listViewStyles = StyleSheet.create({
   listContainer: {
     flex: 1,
-    marginHorizontal: 16,
-    marginVertical: 16,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 12,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   listPlaceholderText: {
     fontSize: 16,

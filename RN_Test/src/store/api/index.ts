@@ -1,7 +1,8 @@
 import { userApi } from "./userApi";
 import { applicationApi } from "./applicationApi";
+import { locationApi } from "./locationApi";
 
-export { userApi, applicationApi };
+export { userApi, applicationApi, locationApi };
 
 export const {
   useRegisterUserMutation,
@@ -26,3 +27,9 @@ export const {
   useApproveApplicationMutation,
   useDeleteApplicationOrCreditMutation
 } = applicationApi;
+
+export const {
+  useGetAllLocationsQuery,
+  useSearchLocationsQuery,
+  useGetLocationByIdQuery
+} = locationApi;
