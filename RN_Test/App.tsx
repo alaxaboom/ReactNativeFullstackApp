@@ -1,6 +1,6 @@
 import React from "react";
-import AppV2 from "./srcv2/app";
+import AppMain from "./src/app"
 
 export default function App() {
-  return <AppV2 />;
+  return <AppMain />;
 }
