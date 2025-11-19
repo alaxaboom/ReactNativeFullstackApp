@@ -133,7 +133,7 @@ export const LocationDetail: React.FC<LocationDetailProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
   },
   header: {
     flexDirection: 'row',
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 8,
+    backgroundColor: '#fff',
   },
   backButton: {
     padding: 8,
@@ -150,7 +151,11 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 16,
+    paddingTop: 16,
     paddingBottom: 24,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   name: {
     fontSize: 24,
@@ -199,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00C853',
     paddingVertical: 16,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 24,
   },
   viewOnMapButtonText: {

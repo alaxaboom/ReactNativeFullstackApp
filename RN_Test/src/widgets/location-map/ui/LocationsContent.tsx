@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, TouchableOpacity, Text, View, Modal } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { SafeAreaView, StatusBar, TouchableOpacity, Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Location } from '../../../shared/types';
 import { useNavigation } from '../../../shared/lib/react-navigation/hooks';
 import { useSmartNavigation } from '../../../shared/utils/smartNavigation';
 import { LocationSearchBar } from '../../../features/location/search-locations';
-import { LocationMapView, LocationListView } from '../../../features/location/view-location-map';
+import { LocationMapView, LocationMapViewRef, LocationListView } from '../../../features/location/view-location-map';
 import { LocationDetail } from '../../../features/location/view-location-details';
+import { ViewToggle } from './ViewToggle';
 import { styles } from './styles';
 
 export const LocationsContent: React.FC = () => {
   const { navigateTo } = useNavigation();
   const { navigateToHomeOrFirst } = useSmartNavigation();
+  const mapViewRef = useRef<LocationMapViewRef>(null);
   const [activeTab, setActiveTab] = useState<'map' | 'list'>('map');
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const locationToAnimateRef = useRef<Location | null>(null);
 
   const handleBack = () => {
+    if (showDetail && selectedLocation) {
+      setShowDetail(false);
+      setSelectedLocation(null);
+      return;
+    }
     if (isSearching) {
       setIsSearching(false);
       setSearchQuery('');
@@ -33,82 +41,94 @@ export const LocationsContent: React.FC = () => {
 
   const handleLocationPress = (location: Location) => {
     setSelectedLocation(location);
-    setIsDetailVisible(true);
-  };
-
-  const handleCloseDetail = () => {
-    setIsDetailVisible(false);
-    setSelectedLocation(null);
+    setShowDetail(true);
   };
 
   const handleViewOnMap = () => {
-    setIsDetailVisible(false);
-    setActiveTab('map');
-    setSelectedLocation(null);
+    if (selectedLocation) {
+      locationToAnimateRef.current = selectedLocation;
+      setShowDetail(false);
+      setActiveTab('map');
+      setSelectedLocation(null);
+    }
   };
+
+  useEffect(() => {
+    if (activeTab === 'map' && locationToAnimateRef.current && mapViewRef.current) {
+      const timer = setTimeout(() => {
+        if (mapViewRef.current && locationToAnimateRef.current) {
+          mapViewRef.current.animateToLocation(locationToAnimateRef.current);
+          locationToAnimateRef.current = null;
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [activeTab]);
+
+  if (showDetail && selectedLocation) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#f5f5f5" />
+        <LocationDetail
+          location={selectedLocation}
+          onClose={handleBack}
+          onViewOnMap={handleViewOnMap}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#f5f5f5" />
       
       {isSearching ? (
-        <LocationSearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onBack={handleBack}
-          placeholder="Search..."
-        />
-      ) : (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Locations</Text>
-          <TouchableOpacity onPress={handleSearchIconPress} style={styles.searchIcon}>
-            <Ionicons name="search" size={24} color="#333" />
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'map' && styles.activeTab]}
-          onPress={() => setActiveTab('map')}
-        >
-          <Text style={[styles.tabText, activeTab === 'map' && styles.activeTabText]}>
-            Map
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'list' && styles.activeTab]}
-          onPress={() => setActiveTab('list')}
-        >
-          <Text style={[styles.tabText, activeTab === 'list' && styles.activeTabText]}>
-            List
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {activeTab === 'map' ? (
-        <LocationMapView searchQuery={searchQuery} onMarkerPress={handleLocationPress} />
-      ) : (
-        <LocationListView searchQuery={searchQuery} onLocationPress={handleLocationPress} />
-      )}
-
-      <Modal
-        visible={isDetailVisible}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={handleCloseDetail}
-      >
-        {selectedLocation && (
-          <LocationDetail
-            location={selectedLocation}
-            onClose={handleCloseDetail}
-            onViewOnMap={handleViewOnMap}
+        <View style={styles.searchContainer}>
+          <LocationSearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onBack={handleBack}
+            placeholder="Search..."
           />
-        )}
-      </Modal>
+        </View>
+      ) : (
+        <>
+          <View style={styles.headerContainer}>
+            <View style={styles.backButtonWrapper}>
+              <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+                <Ionicons name="arrow-back" size={24} color="#333" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.titleRow}>
+              <Text style={styles.title}>Locations</Text>
+              <TouchableOpacity onPress={handleSearchIconPress} style={styles.searchIcon}>
+                <Ionicons name="search" size={24} color="#333" />
+              </TouchableOpacity>
+            </View>
+          </View>
+          {activeTab === 'map' ? (
+            <View style={styles.mapWrapper}>
+              <View style={styles.toggleContainer}>
+                <ViewToggle activeView={activeTab} onViewChange={setActiveTab} />
+              </View>
+              <View style={styles.mapContainer}>
+                <LocationMapView 
+                  ref={mapViewRef}
+                  searchQuery={searchQuery} 
+                  onMarkerPress={handleLocationPress} 
+                />
+              </View>
+            </View>
+          ) : (
+            <View style={styles.contentContainer}>
+              <View style={styles.toggleContainer}>
+                <ViewToggle activeView={activeTab} onViewChange={setActiveTab} />
+              </View>
+              <LocationListView searchQuery={searchQuery} onLocationPress={handleLocationPress} />
+            </View>
+          )}
+        </>
+      )}
     </SafeAreaView>
   );
 };

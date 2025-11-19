@@ -1,3 +1,4 @@
-export { LocationMapView } from './ui/LocationMapView';
+export { LocationMapView, type LocationMapViewRef } from './ui/LocationMapView';
 export { LocationListView } from './ui/LocationListView';
+export { ClusterMarker } from './ui/ClusterMarker';
 
